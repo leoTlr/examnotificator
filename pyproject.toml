@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "examnotificator"
+version = "0.1.3a0"
+description = ""
+authors = ["leoTlr <ltlr+github@posteo.de>"]
+license = "GPL"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^1.8.2"
+stevedore = "^3.4.0"
+configurator = "^2.6.0"
+dbus-python = "^1.2.16"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.910"
+black = "^21.7b0"
+isort = "^5.9.3"
+flake8 = "^3.9.2"
+
+# plugins provided by this package
+[tool.poetry.plugins."examnotificator.plugins.fetchers"]
+"dummy" = "examnotificator.fetching.builtin:DummyFetcher"
+[tool.poetry.plugins."examnotificator.plugins.notificators"]
+"terminal" = "examnotificator.notification.builtin:TerminalNotificator"
+"dbus" = "examnotificator.notification.builtin:DbusNotificator"
+"noop" = "examnotificator.notification.builtin:NoOpNotificator"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
