@@ -39,3 +39,10 @@ class NotifyNew(UseCase):
         notification_exams = new_state.difference(old_state)
         self.notify(notification_exams, notificators)
 
+
+class ListNotificatorPlugins(UseCase):
+    """Output all names of loaded notificator plugins"""
+
+    def execute(self, repo: ExamRepo, fetcher: ExamFetcher, notificators: Iterable[Notificator]) -> None:
+        names = {notificator.name for notificator in notificators}
+        self.notify(names, notificators)

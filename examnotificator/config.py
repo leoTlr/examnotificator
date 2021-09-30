@@ -5,11 +5,12 @@ from enum import Enum
 from pathlib import Path
 from argparse import Namespace
 
-from examnotificator.use_cases import NotifyNew, NotifySaved
+from examnotificator.use_cases import NotifyNew, NotifySaved, ListNotificatorPlugins
 
 class OpMode(Enum):
     NEW = NotifyNew
     SAVED = NotifySaved
+    LIST_PLUGINS_NOTIFICATOR = ListNotificatorPlugins
 
 CONF_DEFAULT_FILEPATH: Path = Path.home() / Path('.config/examnotificator/examnotificator.yml')
 
