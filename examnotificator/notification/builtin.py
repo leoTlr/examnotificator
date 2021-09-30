@@ -24,7 +24,7 @@ class FileNotificator(Notificator):
         super().__init__()
 
     def notify(self) -> None:
-        msg = SimpleFormatter(separator = '\n').format(self.exams)
+        msg = SimpleFormatter(separator = '\n').format(list(self))
         self.file.write(msg)
 
 
@@ -50,10 +50,10 @@ class DbusNotificator(Notificator):
         super().__init__()
 
     def notify(self) -> None:
-        if len(self.exams) <= 0:
+        if len(self) <= 0:
             return
 
-        msg: str = NewItemFormatter().format(self.exams)
+        msg: str = NewItemFormatter().format(list(self))
 
         self.interface.Notify(
             "", 0, "", "examnotificator", msg, [], {"urgency": 1}, 10000

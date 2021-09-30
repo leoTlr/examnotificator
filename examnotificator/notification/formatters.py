@@ -1,10 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Callable, Protocol, Sequence
+from typing import Callable, Sequence
 
+from examnotificator.notification.common import SupportsStr
 
-class SupportsStr(Protocol):
-    def __str__(self) -> str:
-        ...
 
 class Formatter(ABC):
     @abstractmethod

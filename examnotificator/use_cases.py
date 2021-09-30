@@ -19,7 +19,7 @@ class UseCase(ABC):
     @staticmethod
     def notify(exams: set[Exam], notificators: Iterable[Notificator]) -> None:
         for notificator_plugin in notificators:
-            notificator_plugin.add_exams(exams)
+            notificator_plugin.update(exams)
             notificator_plugin.execute()
 
 
