@@ -18,7 +18,7 @@ class PluginError(Exception):
         super().__init__(*args)
 
     def __str__(self) -> str:
-        return f'error in plugin "{self.plugin.name}": {super().__str__()}'
+        return f'error in plugin code from "{self.plugin.name}": {super().__str__()}'
 
 
 class Plugin(ABC):
