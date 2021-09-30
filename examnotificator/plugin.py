@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Iterable, Optional, final
+from sys import exit
 
 import stevedore.driver     # type: ignore
 import stevedore.exception  # type: ignore
@@ -33,12 +34,13 @@ class Plugin(ABC):
         return self.__class__.__name__
 
     @final
-    def execute(self) -> Any:
+    def execute(self, exit_on_fail: bool = False) -> Any:
         try:
             return self._run()
         except Exception as e:
             logger.exception(f'while executing plugin code for plugin "{self.name}", an exception occured. Traceback:')
-            raise PluginError from e
+            if exit_on_fail:
+                exit(-1)
 
 
 def load_single_plugin(name: str, namespace: str) -> Optional[Plugin]:
