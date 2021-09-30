@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 from typing import Iterable
 
 from examnotificator.fetching.common import ExamFetcher
-from examnotificator.model import Exam
-from examnotificator.notification.common import Notificator
+from examnotificator.notification.common import Notificator, SupportsStr
 from examnotificator.repo import ExamRepo
 
 logger = logging.getLogger(__name__)
@@ -17,9 +16,9 @@ class UseCase(ABC):
         ...
 
     @staticmethod
-    def notify(exams: set[Exam], notificators: Iterable[Notificator]) -> None:
+    def notify(items: set[SupportsStr], notificators: Iterable[Notificator]) -> None:
         for notificator_plugin in notificators:
-            notificator_plugin.update(exams)
+            notificator_plugin.update(items)
             notificator_plugin.execute()
 
 
