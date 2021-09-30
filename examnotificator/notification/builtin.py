@@ -4,7 +4,7 @@ from typing import TextIO
 import dbus  # type: ignore
 from examnotificator.notification.common import Notificator
 from examnotificator.notification.formatters import (
-    NewSinceLastFetchFormatter, SimpleExamFormatter)
+    NewItemFormatter, SimpleFormatter)
 
 
 class NoOpNotificator(Notificator):
@@ -24,7 +24,7 @@ class FileNotificator(Notificator):
         super().__init__()
 
     def notify(self) -> None:
-        msg = SimpleExamFormatter(separator = '\n').format(self.exams)
+        msg = SimpleFormatter(separator = '\n').format(self.exams)
         self.file.write(msg)
 
 
@@ -53,7 +53,7 @@ class DbusNotificator(Notificator):
         if len(self.exams) <= 0:
             return
 
-        msg: str = NewSinceLastFetchFormatter().format(self.exams)
+        msg: str = NewItemFormatter().format(self.exams)
 
         self.interface.Notify(
             "", 0, "", "examnotificator", msg, [], {"urgency": 1}, 10000

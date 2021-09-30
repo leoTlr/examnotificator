@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import Callable
-
-from examnotificator.model import Exam
+from typing import Callable, Protocol, Sequence
 
 
-class ExamFormatter(ABC):
+class SupportsStr(Protocol):
+    def __str__(self) -> str:
+        ...
+
+class Formatter(ABC):
     @abstractmethod
-    def format(self, exams: set[Exam]) -> str:
+    def format(self, items: Sequence[SupportsStr]) -> str:
         pass
 
 
@@ -19,24 +21,33 @@ def with_affix(prefix: str, suffix: str) -> Callable[..., Callable[..., str]]:
     return inner
 
 
-class NewSinceLastFetchFormatter(ExamFormatter):
-    """i.e.: "new Exams: Exam1, Exam2" """
-    def format(self, exams: set[Exam]) -> str:
-        if len(exams) == 0:
-            return "No new exams"
-        elif len(exams) == 1:
-            return "New exam: \n" + "\n".join(map(str, exams))
+class NewItemFormatter(Formatter):
+    """i.e.: "New Exams: Exam1, Exam2" """
+
+    item_name_singular: str
+    item_name_plural: str
+
+    def __init__(self, item_name_singular = 'Exam', item_name_plural = 'Exams') -> None:
+        self.item_name_singular = item_name_singular
+        self.item_name_plural = item_name_plural
+
+    def format(self, items: Sequence[SupportsStr]) -> str:
+        if len(items) == 0:
+            return f"No new {self.item_name_singular}"
+        elif len(items) == 1:
+            return f"New {self.item_name_singular}: \n" + "\n".join(map(str, items))
         else:
-            return "New exams: \n" + "\n".join(map(str, exams))
+            return f"New {self.item_name_plural}: \n" + "\n".join(map(str, items))
 
 
-class SimpleExamFormatter(ExamFormatter):
-    """formats given exams separated by given separator"""
+class SimpleFormatter(Formatter):
+    """formats given items separated by given separator"""
+    
     separator: str
 
     def __init__(self, separator: str = '\n') -> None:
         self.separator = separator
 
     @with_affix(prefix='', suffix='\n')
-    def format(self, exams: set[Exam]) -> str:
-        return self.separator.join(map(str, exams))
+    def format(self, items: Sequence[SupportsStr]) -> str:
+        return self.separator.join(map(str, items))
