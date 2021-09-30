@@ -8,7 +8,7 @@ license = "GPL"
 [tool.poetry.dependencies]
 python = "^3.9"
 stevedore = "^3.4.0"
-configurator = "^2.6.0"
+configurator = {extras = ["yaml"], version = "^2.6.0"}
 dbus-python = "^1.2.16"
 
 [tool.poetry.dev-dependencies]
