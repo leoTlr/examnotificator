@@ -37,7 +37,7 @@ class Plugin(ABC):
         try:
             return self._run()
         except Exception as e:
-            logger.error(f'error executing plugin "{self.name}": {e}')
+            logger.exception(f'while executing plugin code for plugin "{self.name}", an exception occured. Traceback:')
             raise PluginError from e
 
 
@@ -52,10 +52,12 @@ def load_single_plugin(name: str, namespace: str) -> Optional[Plugin]:
         mgr = stevedore.driver.DriverManager(
             namespace = namespace,
             name = name,
-            invoke_on_load = True,
-            on_load_failure_callback = plugin_load_failure_callback
         )
-        return mgr.driver
+        try:
+            return mgr.driver()
+        except Exception as e:
+            logger.exception(f'while trying to invoke plugin "{name}" an exception occured. Traceback:')
+            logger.warning(f'skip loading plugin "{name}"')
     except stevedore.exception.NoMatches as e:
         logger.warning(f'did not find plugin with name "{name}" in namespace "{namespace}": {e}')
     
