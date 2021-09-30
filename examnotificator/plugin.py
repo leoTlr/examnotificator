@@ -41,12 +41,6 @@ class Plugin(ABC):
             raise PluginError from e
 
 
-plugin_load_failure_callback = lambda mgr, entrypoint, exception: \
-    logger.error(f'error loading plugin "{entrypoint}": {exception}')
-
-plugin_missing_entrypoints_callback = lambda items: \
-    logger.warning(f'could not find entrypoints for plugins: {", ".join(items)}')
-
 def load_single_plugin(name: str, namespace: str) -> Optional[Plugin]:
     try:
         mgr = stevedore.driver.DriverManager(
