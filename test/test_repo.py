@@ -1,7 +1,7 @@
 import unittest
 
 from examnotificator.repo import ShelveRepo
-from examnotificator.model import Exam, exam_factory
+from examnotificator.model import Exam
 
 from tempfile import TemporaryDirectory
 from uuid import uuid4
@@ -31,7 +31,7 @@ class TestShelveRepo(unittest.TestCase):
     def test_add_one(self):
 
         sr = ShelveRepo(self.tf)
-        exam = exam_factory(grade=1.0, name='sth')
+        exam = Exam('sth', '1.0')
         sr.save({exam})
         
         self.assertSetEqual({exam}, sr.get())
@@ -39,51 +39,49 @@ class TestShelveRepo(unittest.TestCase):
 
     def test_add_multiple_at_once(self):
         sr = ShelveRepo(self.tf)
-        exams = { 
-            exam_factory(name=_name, grade=_grade)
-            for _grade, _name in [
-                (1.0, 'sth'), 
-                (2.0, 'def'), 
-                (3.0, '3.0'), 
-                (4.0, 'abc')
-            ]}
+        exams = {
+            Exam(name, grade) for name, grade in [
+                ('sth', '1.0'), 
+                ('def', '2.0'), 
+                ('eoa', '3.0'), 
+                ('abc', '4.0')
+        ]}
         sr.save(exams)
 
         self.assertSetEqual(exams, sr.get())
     
     def test_add_one_update_one(self):
         sr = ShelveRepo(self.tf)
-        exam_0 = exam_factory(grade=1.0, name='sth')
+        exam_0 = Exam('sth', '1.0')
         sr.save({exam_0})
 
-        exam_1 = exam_factory(grade=1.3, name='abc')
+        exam_1 = Exam('abc', '1.3')
         sr.save({exam_1})
         
         self.assertSetEqual({exam_0, exam_1}, sr.get())
 
     def test_add_one_update_multiple(self):
         sr = ShelveRepo(self.tf)
-        exam_0 = exam_factory(grade=5.0, name='hdk')
+        exam_0 = Exam('hdk', '5.0')
         sr.save({exam_0})
 
-        exams = { 
-            exam_factory(name=_name, grade=_grade)
-            for _grade, _name in [
-                (1.0, 'sth'), 
-                (2.0, 'def'), 
-                (3.0, '3.0'), 
-                (4.0, 'abc')
-            ]}
+        exams = {
+            Exam(name, grade) for name, grade in [
+                ('sth', '1.0'), 
+                ('def', '2.0'), 
+                ('eoa', '3.0'), 
+                ('abc', '4.0')
+        ]}
         sr.save(exams)
 
         self.assertSetEqual(exams | {exam_0}, sr.get())
 
     def test_add_one_override(self):
         sr = ShelveRepo(self.tf)
-        exam_0 = exam_factory(grade=1.0, name='sth')
+        exam_0 = Exam('sth', '1.0')
         sr.save({exam_0})
 
-        exam_1 = exam_factory(grade=1.3, name='abc')
+        exam_1 = Exam('abc', '1.3')
         sr.save({exam_1}, override=True)
         
         self.assertSetEqual({exam_1}, sr.get())
