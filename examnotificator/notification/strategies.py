@@ -35,7 +35,7 @@ class FetchCompareStrategy(NotificationStrategy):
 
     def process(self) -> set[Exam]:
         old_state = self.repo.get()
-        new_state = self.fetcher.fetch()
+        new_state = self.fetcher.execute()
         return self.comparator(old_state, new_state)
 
 
