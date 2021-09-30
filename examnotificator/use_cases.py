@@ -40,6 +40,14 @@ class NotifyNew(UseCase):
         self.notify(notification_exams, notificators)
 
 
+class Fetch(UseCase):
+    """Fetch exams without saving them"""
+
+    def execute(self, _: ExamRepo, fetcher: ExamFetcher, notificators: Iterable[Notificator]) -> None:
+        notification_exams = fetcher.execute(exit_on_fail=True)
+        self.notify(notification_exams, notificators)
+
+
 class ListNotificatorPlugins(UseCase):
     """Output all names of loaded notificator plugins"""
 

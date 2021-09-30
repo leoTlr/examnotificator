@@ -14,6 +14,9 @@ def get_parser() -> ArgumentParser:
         "--saved", action="store_const", const=OpMode.SAVED, dest='opmode',
         help="show all saved exams without fetching")
     opmode_group.add_argument(
+        "--fetch", action='store_const', const=OpMode.FETCH, dest='opmode',
+        help='only fetch exams without saving them')
+    opmode_group.add_argument(
         "--list-plugins-notificators", action="store_const", const=OpMode.LIST_PLUGINS_NOTIFICATOR, dest='opmode',
         help="list all loadable notificator plugins"
     )
