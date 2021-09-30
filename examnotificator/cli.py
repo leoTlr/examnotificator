@@ -20,16 +20,7 @@ def get_parser() -> ArgumentParser:
         "--list-plugins-notificators", action="store_const", const=OpMode.LIST_PLUGINS_NOTIFICATOR, dest='opmode',
         help="list all loadable notificator plugins"
     )
-    # opmode_group.add_argument(
-    #     "--fetch", action='store_const', const=OpMode.FETCH, dest='opmode',
-    #     help='only fetch exams')
-    # opmode_group.add_argument(
-    #     "--fetch-save", action='store_const', const=OpMode.FETCH_SAVE, dest='opmode',
-    #     help='fetch exams and save them')
-
-    # parser.add_argument(
-    #     "--notify-desktop", action="store_true", 
-    #     help="show desktop notification via dbus")
+    
     parser.add_argument(
         "--config", type=Path, metavar='PATH',
         help="path to configuration file")
