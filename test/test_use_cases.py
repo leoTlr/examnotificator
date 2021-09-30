@@ -25,9 +25,9 @@ class TestNotifySaved(TestCase):
         
         use_case.execute(MemRepo(exams), DummyFetcher(), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
@@ -42,15 +42,15 @@ class TestNotifySaved(TestCase):
         
         use_case.execute(MemRepo(exams), DummyFetcher(), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
 
 
-class TestFetchCompareStrategy(TestCase):
+class TestNotifyNew(TestCase):
 
     def setUp(self) -> None:
         self.notificator = Mock(NoOpNotificator)
@@ -66,9 +66,9 @@ class TestFetchCompareStrategy(TestCase):
         use_case = NotifyNew()
         use_case.execute(MemRepo(exams_before), DummyFetcher(exams_new), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams_new, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
@@ -87,9 +87,9 @@ class TestFetchCompareStrategy(TestCase):
         use_case = NotifyNew()
         use_case.execute(MemRepo(exams_before), DummyFetcher(exams_new), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams_new, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
@@ -109,9 +109,9 @@ class TestFetchCompareStrategy(TestCase):
         use_case = NotifyNew()
         use_case.execute(MemRepo(exams_before), DummyFetcher(exams_new), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams_new, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
@@ -133,9 +133,9 @@ class TestFetchCompareStrategy(TestCase):
         use_case = NotifyNew()
         use_case.execute(MemRepo(exams_before), DummyFetcher(exams_new), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams_new, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
@@ -156,9 +156,9 @@ class TestFetchCompareStrategy(TestCase):
         use_case = NotifyNew()
         use_case.execute(MemRepo(exams_before), DummyFetcher(exams_new), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams_new, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
@@ -181,9 +181,9 @@ class TestFetchCompareStrategy(TestCase):
         use_case = NotifyNew()
         use_case.execute(MemRepo(exams_before), DummyFetcher(exams_new), [self.notificator])
 
-        self.notificator.add_exams.assert_called()
+        self.notificator.update.assert_called()
         exams_added_to_notificator = set()
-        for call in self.notificator.add_exams.call_args_list:
+        for call in self.notificator.update.call_args_list:
             exams_added_to_notificator.update(call.args[0])
         self.assertSetEqual(exams_new, exams_added_to_notificator)
         self.notificator.execute.assert_called_once()
