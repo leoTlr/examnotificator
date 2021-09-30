@@ -4,7 +4,7 @@ from typing import Callable
 from examnotificator.model import Exam
 
 
-class MessageFormatter(ABC):
+class ExamFormatter(ABC):
     @abstractmethod
     def format(self, exams: set[Exam]) -> str:
         pass
@@ -19,7 +19,7 @@ def with_affix(prefix: str, suffix: str) -> Callable[..., Callable[..., str]]:
     return inner
 
 
-class NewSinceLastFetchFormatter(MessageFormatter):
+class NewSinceLastFetchFormatter(ExamFormatter):
     """i.e.: "new Exams: Exam1, Exam2" """
     def format(self, exams: set[Exam]) -> str:
         if len(exams) == 0:
@@ -30,7 +30,7 @@ class NewSinceLastFetchFormatter(MessageFormatter):
             return "New exams: \n" + "\n".join(map(str, exams))
 
 
-class SimpleExamFormatter(MessageFormatter):
+class SimpleExamFormatter(ExamFormatter):
     """formats given exams separated by given separator"""
     separator: str
 
