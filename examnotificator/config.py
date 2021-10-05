@@ -41,11 +41,10 @@ _defaults = configurator.Config({
 config = _defaults
 
 _cli_arg_mapping = {
-    configurator.mapping.if_supplied('fetcher'): 'fetcher',
+    configurator.mapping.if_supplied('fetcher'): 'fetcher.name',
     configurator.mapping.if_supplied('opmode'): 'mode',
     'verbose': 'verbosity',
     'notify_desktop': 'notificators.dbus.notify',
-    configurator.mapping.if_supplied('state_location'): 'repo.shelve.path',
 }
 
 def load_config(cmdargs: Namespace, config_file: Optional[Path] = CONF_DEFAULT_FILEPATH) -> configurator.Config:

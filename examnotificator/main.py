@@ -46,11 +46,15 @@ class App:
             if 'notify' in val and val['notify'] == True
         ]
         
-        return cls()\
-            .with_repo(ShelveRepo(config.repo.config.path))\
-            .with_fetcher(config.fetcher.name, config.plugin_namespaces.fetcher)\
-            .with_notificators(notificator_plugin_names, config.plugin_namespaces.notificators)\
-            .for_use_case(config.mode)
+        try:
+            return cls()\
+                .with_repo(ShelveRepo(config.repo.config.path))\
+                .with_fetcher(config.fetcher.name, config.plugin_namespaces.fetcher)\
+                .with_notificators(notificator_plugin_names, config.plugin_namespaces.notificators)\
+                .for_use_case(config.mode)
+        except (KeyError, AttributeError) as e:
+            logger.error(f'missing configuration option: {e}')
+            sys.exit(-1)
 
     def with_repo(self, repo: ExamRepo) -> App:
         self.repo = repo
