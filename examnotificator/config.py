@@ -7,13 +7,15 @@ from argparse import Namespace
 
 from examnotificator.use_cases import NotifyNew, NotifySaved, ListNotificatorPlugins, Fetch
 
+
 class OpMode(Enum):
     NEW = NotifyNew
     SAVED = NotifySaved
     FETCH = Fetch
     LIST_PLUGINS_NOTIFICATOR = ListNotificatorPlugins
 
-CONF_DEFAULT_FILEPATH: Path = Path.home() / Path('.config/examnotificator/examnotificator.yml')
+
+USER_CONF_DEFAULT_FILEPATH: Path = Path.home() / Path('.config/examnotificator/examnotificator.yml')
 
 _defaults = configurator.Config({
     'mode': OpMode.NEW,
@@ -47,13 +49,16 @@ _cli_arg_mapping = {
     'notify_desktop': 'notificators.dbus.notify',
 }
 
-def load_config(cmdargs: Namespace, config_file: Optional[Path] = CONF_DEFAULT_FILEPATH) -> configurator.Config:
-    file_conf = configurator.Config.from_path(config_file, optional = True)
-    
-    global config
-    config.merge(file_conf, {
-        'fetcher': 'fetcher',
-        'notificators': 'notificators'
-    })
+def load_config(cli_args: Namespace, config_file: Optional[Path] = None) -> configurator.Config:
+    """
+    Populate module-level config object with cli and config file args.
+    Precedence: cli > config file > defaults
+    """
 
-    config.merge(cmdargs, _cli_arg_mapping)
+    config_file = config_file or USER_CONF_DEFAULT_FILEPATH
+    file_conf = configurator.Config.from_path(config_file, optional = True)
+    cli_conf = configurator.Config(cli_args)
+    
+    # module-global config object
+    config.merge(file_conf)
+    config.merge(cli_conf, _cli_arg_mapping)

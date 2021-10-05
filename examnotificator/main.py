@@ -88,14 +88,10 @@ class App:
 
 
 def main() -> None:
-    arg_parser = get_parser()
-    args = arg_parser.parse_args()
-    configure_logging(args.verbose)
+    cli_args = get_parser().parse_args()
+    configure_logging(cli_args.verbose)
 
-    if args.config:
-        load_config(args, args.config)
-    else:
-        load_config(args)
+    load_config(cli_args, cli_args.config)
 
     app = App.from_config(config)
     app.execute()
